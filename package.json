@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "validate-webpack:dev": "webpack-validator webpack.config.js --env.dev",
-    "validate-webpack:prod": "webpack-validator webpack.config.js --env.prod"
+    "validate-webpack:prod": "webpack-validator webpack.config.js --env.prod",
+    "build": "webpack --env.dev"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,14 @@
   },
   "homepage": "https://github.com/edwinlin1987/party-planner#readme",
   "dependencies": {
+    "lodash": "^4.16.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "webpack": "^2.1.0-beta.25"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^2.22.0"
   }
 }
