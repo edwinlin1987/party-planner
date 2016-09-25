@@ -26,7 +26,9 @@ module.exports = env => {
       })
     ]), 
     module: {
-      loaders: []
+      loaders: [
+        { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ }
+      ]
     }
   };
 };
