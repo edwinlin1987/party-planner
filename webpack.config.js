@@ -4,6 +4,9 @@ const { resolve } = require('path')
 
 module.exports = env => {
   const ifProd = value => env.prod ? value : undefined
+  // const ifNotProd = value => env.prod ? undefined : value
+  // const ifTest = value => env.test ? value : undefined
+  // const ifNotTest = value => env.test ? undefined : value
   const removeEmpty = array => array.filter(i => !!i)
   return {
     entry: {
@@ -20,6 +23,11 @@ module.exports = env => {
       ifProd(new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor'
       })),
+      // Uncomment this when there are multiple different apps
+      // ifNotTest(new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'common',
+      //   chunks: ['app']
+      // })),
       new HtmlWebpackPlugin({
         template: './index.html'
       })
