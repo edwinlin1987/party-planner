@@ -31,6 +31,9 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015-webpack": "^6.4.3",
     "html-webpack-plugin": "^2.22.0",
     "rimraf": "^2.5.4",
     "webpack": "^2.1.0-beta.25"
