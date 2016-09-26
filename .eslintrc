@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "extends": [
     "standard",
     "standard-react"
@@ -12,9 +13,15 @@
     "browser" : true
   },
   "rules": {
+    "semi"                 : [1,"always"],
     "key-spacing"          : 0,
     "jsx-quotes"           : [2, "prefer-single"],
     "max-len"              : [2, 120, 2],
     "object-curly-spacing" : [2, "always"]
+  },
+  "globals": {
+    "describe": false,
+    "it": false,
+    "expect" : false
   }
 }

@@ -1,3 +1,2 @@
-export default a => a
+export {};
 
-export const fish = b => b

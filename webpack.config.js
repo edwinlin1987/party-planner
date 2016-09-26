@@ -1,13 +1,13 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
-const { resolve } = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const { resolve } = require('path');
 
 module.exports = env => {
-  const ifProd = value => env.prod ? value : undefined
+  const ifProd = value => env.prod ? value : undefined;
   // const ifNotProd = value => env.prod ? undefined : value
   // const ifTest = value => env.test ? value : undefined
   // const ifNotTest = value => env.test ? undefined : value
-  const removeEmpty = array => array.filter(i => !!i)
+  const removeEmpty = array => array.filter(i => !!i);
   return {
     entry: {
       app: './app.js',
@@ -28,6 +28,11 @@ module.exports = env => {
       //   name: 'common',
       //   chunks: ['app']
       // })),
+      ifProd(new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: '"production"'
+        }
+      })),
       new HtmlWebpackPlugin({
         template: './index.html'
       })
@@ -37,5 +42,5 @@ module.exports = env => {
         { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ }
       ]
     }
-  }
-}
+  };
+};
