@@ -10,7 +10,7 @@ module.exports = env => {
   const removeEmpty = array => array.filter(i => !!i);
   return {
     entry: {
-      app: './app.js',
+      app: './js/app.js',
       vendor: ['lodash']
     },
     output: {
