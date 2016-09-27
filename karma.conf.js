@@ -2,7 +2,10 @@
 // Generated on Sun Sep 25 2016 23:48:42 GMT-0700 (PDT)
 
 const webpackConfig = require('./webpack.config')({ test: true });
-const testFileRegex = 'src/js/**/*.test.js';
+const testGlob = 'src/js/**/*.test.js';
+const srcGlob = 'src/js/**/*!(test).js';
+
+process.env.BABEL_ENV = 'test';
 
 module.exports = function (config) {
   config.set({
@@ -12,13 +15,12 @@ module.exports = function (config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'chai'],
     // list of files / patterns to load in the browser
-    files: [
-      testFileRegex
-    ],
+    files: [testGlob, srcGlob],
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      [testFileRegex] : ['webpack']
+      [testGlob] : ['webpack'],
+      [srcGlob] : ['webpack']
     },
     // webpack config
     webpack : webpackConfig,
@@ -27,7 +29,14 @@ module.exports = function (config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+    coverageReporter: {
+      reporters: [
+        { type: 'lcov', dir: 'coverage/', subdir: '.' },
+        { type: 'json', dir: 'coverage/', subdir: '.' },
+        { type: 'text-summary' }
+      ]
+    },
     // web server port
     port: 9876,
     // enable / disable colors in the output (reporters and logs)
