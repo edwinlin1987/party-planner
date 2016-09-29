@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('app:server');
+const path = require('path');
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config');
 
@@ -18,9 +19,20 @@ const compiler = webpack(webpackConfig);
 
 debug('enable webpack dev and HMR middleware');
 // TODO: add webpack dev middleware and hot-middleware for hot loading
+app.use(require('webpack-dev-middleware')(compiler, {
+  publicPath: '/',
+  contentBase: path.resolve(__dirname, '/src'),
+  hot: true,
+  quiet: false,
+  noInfo: false,
+  lazy: false,
+  stats: {
+    chunks : false,
+    chunkModules : false,
+    colors : true
+  }
+}));
 
-
-
+app.use(require('webpack-hot-middleware')(compiler));
 
 module.exports = app;
-
