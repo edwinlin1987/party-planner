@@ -4,6 +4,9 @@ const path = require('path');
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config');
 
+const environment = process.env.NODE_ENV || 'development';
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 // Rewrites all route requests to root /index.html
@@ -11,28 +14,35 @@ const app = express();
 // single page apps for issues like page refreshing
 app.use(require('connect-history-api-fallback')());
 
-/**
- * TODO: separate logic for dev vs prod
- */
-// if dev
-const compiler = webpack(webpackConfig);
+if (environment === 'development') {
+  const compiler = webpack(webpackConfig(environment));
 
-debug('enable webpack dev and HMR middleware');
-// TODO: add webpack dev middleware and hot-middleware for hot loading
-app.use(require('webpack-dev-middleware')(compiler, {
-  publicPath: '/',
-  contentBase: path.resolve(__dirname, '/src'),
-  hot: true,
-  quiet: false,
-  noInfo: false,
-  lazy: false,
-  stats: {
-    chunks : false,
-    chunkModules : false,
-    colors : true
-  }
-}));
+  debug('enable webpack dev and HMR middleware');
+  // dev middleware
+  app.use(require('webpack-dev-middleware')(compiler, {
+    publicPath: '/',
+    contentBase: path.resolve(__dirname, '/src'),
+    hot: true,
+    quiet: false,
+    noInfo: false,
+    lazy: false,
+    stats: {
+      chunks : false,
+      chunkModules : false,
+      colors : true
+    }
+  }));
 
-app.use(require('webpack-hot-middleware')(compiler));
+  // hot reloading middleware
+  app.use(require('webpack-hot-middleware')(compiler));
 
-module.exports = app;
+  // serving static files directly from static during development,
+  // they should be copied to the dist folder in compilation
+  app.use(express.static(path.resolve(__dirname, '/src/static')));
+} else {
+  debug('not in development mode - using application server to serve files');
+  app.use(express.static(path.resolve(__dirname, '/dist')));
+}
+
+app.listen(port);
+debug(`Server is now running at http://localhost:${port}.`);
