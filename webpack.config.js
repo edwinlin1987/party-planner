@@ -4,9 +4,11 @@ const { resolve } = require('path');
 
 module.exports = env => {
   const ifProd = value => env.prod ? value : undefined;
-  // const ifNotProd = value => env.prod ? undefined : value
-  // const ifTest = value => env.test ? value : undefined
-  // const ifNotTest = value => env.test ? undefined : value
+  // const ifNotProd = value => env.prod ? undefined : value;
+  // const ifTest = value => env.test ? value : undefined;
+  // const ifNotTest = value => env.test ? undefined : value;
+  const ifDev = value => env.dev ? value : undefined;
+  const ifNotDev = value => env.dev ? undefined : value;
   const removeEmpty = array => array.filter(i => !!i);
   return {
     entry: {
@@ -20,8 +22,19 @@ module.exports = env => {
     },
     context: resolve(__dirname, 'src'),
     plugins: removeEmpty([
+      ifDev(new webpack.HotModuleReplacementPlugin()),
+      ifDev(new webpack.NoErrorsPlugin()),
       ifProd(new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor'
+      })),
+      ifProd(new webpack.optimize.OccurrenceOrderPlugin()),
+      ifProd(new webpack.optimize.DedupePlugin()),
+      ifProd(new webpack.optimize.UglifyJsPlugin({
+        compress : {
+          unused    : true,
+          dead_code : true,
+          warnings  : false
+        }
       })),
       // Uncomment this when there are multiple different apps
       // ifNotTest(new webpack.optimize.CommonsChunkPlugin({
