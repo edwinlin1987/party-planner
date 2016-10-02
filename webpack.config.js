@@ -8,11 +8,14 @@ module.exports = env => {
   // const ifTest = value => env.test ? value : undefined;
   // const ifNotTest = value => env.test ? undefined : value;
   const ifDev = value => env.dev ? value : undefined;
-  const ifNotDev = value => env.dev ? undefined : value;
+  // const ifNotDev = value => env.dev ? undefined : value;
   const removeEmpty = array => array.filter(i => !!i);
+
+  const appEntry = './js/app.js';
+
   return {
     entry: {
-      app: './js/app.js',
+      app: env.dev ? appEntry.concat('webpack-hot-middleware/client?path=/__webpack_hmr') : appEntry,
       vendor: ['lodash']
     },
     output: {
@@ -22,12 +25,12 @@ module.exports = env => {
     },
     context: resolve(__dirname, 'src'),
     plugins: removeEmpty([
+      new webpack.optimize.OccurrenceOrderPlugin(),
       ifDev(new webpack.HotModuleReplacementPlugin()),
       ifDev(new webpack.NoErrorsPlugin()),
       ifProd(new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor'
       })),
-      ifProd(new webpack.optimize.OccurrenceOrderPlugin()),
       ifProd(new webpack.optimize.DedupePlugin()),
       ifProd(new webpack.optimize.UglifyJsPlugin({
         compress : {

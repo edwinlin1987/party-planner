@@ -14,7 +14,7 @@
     "prebuild": "npm run clean-dist",
     "prebuild:prod": "npm run clean-dist",
     "build": "webpack --env.dev",
-    "build:prod": "webpack --env.prod -p",
+    "build:prod": "webpack --env.prod",
     "clean-dist": "rimraf dist",
     "prestart": "npm run clean-dist",
     "lint": "eslint ."
