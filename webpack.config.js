@@ -11,7 +11,11 @@ module.exports = env => {
   // const ifNotDev = value => env.dev ? undefined : value;
   const removeEmpty = array => array.filter(i => !!i);
 
-  const appEntry = './js/app.js';
+  const appEntry = './js/app.jsx';
+
+  const client = resolve(__dirname, 'src');
+
+  const dist = resolve(__dirname, 'dist');
 
   return {
     entry: {
@@ -19,11 +23,14 @@ module.exports = env => {
       vendor: ['lodash']
     },
     output: {
-      path: resolve(__dirname, 'dist'),
+      path: dist,
       filename: 'bundle.[name].[chunkhash].js',
       pathinfo: !env.prod
     },
-    context: resolve(__dirname, 'src'),
+    context: client,
+    resolve : {
+      extensions : ['.js', '.jsx', '.json']
+    },
     plugins: removeEmpty([
       new webpack.optimize.OccurrenceOrderPlugin(),
       ifDev(new webpack.HotModuleReplacementPlugin()),
@@ -55,7 +62,7 @@ module.exports = env => {
     ]),
     module: {
       loaders: [
-        { test: /\.js$/, loader: 'babel!eslint', exclude: /node_modules/ }
+        { test: /\.(js|jsx)$/, loader: 'babel!eslint', exclude: /node_modules/ }
       ]
     }
   };

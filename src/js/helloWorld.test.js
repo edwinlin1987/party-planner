@@ -1,5 +1,3 @@
-import App from './app';
-
 describe('hello world test', () => {
   it('works', () => {
     // test 1
@@ -8,6 +6,6 @@ describe('hello world test', () => {
 
   it('also works', () => {
     // test 2
-    expect(App).to.exist;
+    expect(1).to.exist;
   });
 });
