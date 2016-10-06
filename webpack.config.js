@@ -19,12 +19,12 @@ module.exports = env => {
 
   return {
     entry: {
-      app: env.dev ? appEntry.concat('webpack-hot-middleware/client?path=/__webpack_hmr') : appEntry,
+      app: env.dev ? [appEntry].concat('webpack-hot-middleware/client?path=/__webpack_hmr') : [appEntry],
       vendor: ['lodash']
     },
     output: {
       path: dist,
-      filename: 'bundle.[name].[chunkhash].js',
+      filename: 'bundle.[name].[hash].js',
       pathinfo: !env.prod
     },
     context: client,
